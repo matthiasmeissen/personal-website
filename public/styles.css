@@ -17,7 +17,7 @@ body {
     color: var(--foreground-primary);
     background-color: var(--background-primary);
     margin: 0;
-    padding: 5% 8%;
+    padding: 4% 8%;
 }
 
 h1 {
@@ -53,6 +53,15 @@ a:hover {
 .cta:hover {
     border: 2px solid var(--foreground-primary);
     transform: scale(1.1);
+}
+
+canvas {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: min(40vh, 40vw);
+    height: min(40vh, 40vw);
+    border-radius: 12px;
 }
 
 section {
