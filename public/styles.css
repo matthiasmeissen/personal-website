@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@font-face {
+    font-family: 'Geist';
+    src: url('./assets/GeistVF.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+}
 
 :root {
     --background-primary: #fafafa;
@@ -11,8 +16,8 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
+    font-family: 'Geist', sans-serif;
+    font-size: 1.25rem;
     line-height: 1.6;
     color: var(--foreground-primary);
     background-color: var(--background-primary);
@@ -22,7 +27,8 @@ body {
 
 h1 {
     font-weight: 700;
-    font-size: 1.75rem;
+    font-size: 2rem;
+    line-height: 1.1;
 }
 
 a {
