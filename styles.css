@@ -17,68 +17,51 @@
 
 body {
     font-family: 'Geist', sans-serif;
-    font-size: 1.25rem;
-    line-height: 1.6;
     color: var(--foreground-primary);
     background-color: var(--background-primary);
     margin: 0;
-    padding: 4% 8%;
+    overflow: hidden;
 }
 
 h1 {
-    font-weight: 700;
-    font-size: 2rem;
+    font-weight: 900;
+    font-size: 20vw;
     line-height: 1.1;
+    margin: 0;
 }
 
-a {
-    color: var(--foreground-subtle);
-    border-bottom: 1px dashed var(--foreground-subtle);
-    padding-bottom: 2px;
-    text-decoration: none;
+p {
+    font-size: max(1.5vw, 16px);
+    font-weight: 300;
+    margin: 0;
 }
 
-
-a:hover {
-    color: var(--foreground-primary);
-    border-bottom: 1px solid var(--foreground-primary);
-}
-
-.cta {
-    display: inline-block;
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    color: var(--foreground-primary);
-    border: 2px solid var(--foreground-primary);
-    border-radius: 0.5rem;
-    text-decoration: none;
-    transition: all 0.1s ease;
-}
-
-.cta:hover {
-    border: 2px solid var(--foreground-primary);
-    transform: scale(1.1);
-}
 
 canvas {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: min(40vh, 40vw);
-    height: min(40vh, 40vw);
+    top: 2vw;
+    left: 2vw;
+    width: calc(100vw - 4vw);
+    height: calc(100vh - 4vw);
     border-radius: 12px;
 }
 
 section {
-    margin: 3rem 0;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    margin: 0 auto;
+    padding: 4vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+    z-index: 10;
+    color: #ffffff;
 }
 
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background-primary: #161616;
-        --foreground-primary: #f4f4f4;
-        --foreground-subtle: #b0b0b0;
-    }
+section svg path{
+    stroke: #ffffff;
 }
