@@ -6,7 +6,7 @@
 }
 
 :root {
-    --background-primary: #fafafa;
+    --background-primary: #f4f4f4;
     --foreground-primary: #161616;
     --foreground-subtle: #6b6b6b;
 }
@@ -78,7 +78,7 @@ section {
 @media (prefers-color-scheme: dark) {
     :root {
         --background-primary: #161616;
-        --foreground-primary: #fafafa;
+        --foreground-primary: #f4f4f4;
         --foreground-subtle: #b0b0b0;
     }
 }
