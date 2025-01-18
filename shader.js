@@ -7,6 +7,15 @@ if (!gl) {
     document.body.innerHTML = 'WebGL is not supported by your browser.';
 }
 
+// Add mouse tracking
+let mouse = { x: 0, y: 0 };
+
+// Listen to mousemove events
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX / window.innerWidth;
+    mouse.y = e.clientY / window.innerHeight
+});
+
 // Vertex shader source
 const vsSource = `
     attribute vec4 aVertexPosition;
@@ -20,6 +29,7 @@ const fsSource = `
 precision mediump float;
 uniform float u_time;
 uniform vec2 u_resolution;
+uniform vec2 u_mouse;
 uniform float u_a, u_b, u_c, u_d;
 
 vec2 rotate(vec2 p, float a) {
@@ -43,9 +53,9 @@ void main() {
 
     p = vec2(length(p), sin(p.y));
 
-    p = mix(p * 0.2, p, u_a);
+    p = mix(p * 0.2, p, atan(u_mouse.y, u_mouse.x * p.x));
 
-    vec2 p1 = mix(p, tan(p * 10.0), u_b * 0.04);
+    vec2 p1 = mix(p, tan(p * 10.0), u_mouse.x * 0.2);
 
     vec2 t = mod(vec2(0.4 * p1.x, p.y) * 2.0, rotate(p1, tan(p.y) + u_time * 0.4).x);
     
@@ -123,6 +133,7 @@ function runShader(a, b, c, d) {
         uniformLocations: {
             time: gl.getUniformLocation(shaderProgram, 'u_time'),
             resolution: gl.getUniformLocation(shaderProgram, 'u_resolution'),
+            mouse: gl.getUniformLocation(shaderProgram, 'u_mouse'),
             a: gl.getUniformLocation(shaderProgram, 'u_a'),
             b: gl.getUniformLocation(shaderProgram, 'u_b'),
             c: gl.getUniformLocation(shaderProgram, 'u_c'),
@@ -155,6 +166,7 @@ function runShader(a, b, c, d) {
 
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.uniform1f(programInfo.uniformLocations.time, time);
+        gl.uniform2f(programInfo.uniformLocations.mouse, mouse.x, mouse.y);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
         requestAnimationFrame(render);
