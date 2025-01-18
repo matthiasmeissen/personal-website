@@ -36,6 +36,17 @@ p {
     margin: 0;
 }
 
+button {
+    font-family: 'Geist', sans-serif;
+    font-size: min(16px, 2vw);
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    background-color: transparent;
+    margin-top: 1vw;
+}
+
 
 canvas {
     position: fixed;
