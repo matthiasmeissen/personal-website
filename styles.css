@@ -55,6 +55,7 @@ canvas {
     width: calc(100vw - 4vw);
     height: calc(100vh - 4vw);
     border-radius: 12px;
+    touch-action: none;
 }
 
 section {

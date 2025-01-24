@@ -28,15 +28,33 @@
     let $mouseX = 0.5;
     let $mouseY = 0.5;
 
-    document.addEventListener("mousemove", (e) => {
-        $mouseX = e.clientX / window.innerWidth;
-        $mouseY = e.clientY / window.innerHeight;
+    // Function to update mouseX and mouseY and set faustNode parameters
+    function updateInteraction(x, y) {
+        $mouseX = x / window.innerWidth;
+        $mouseY = y / window.innerHeight;
 
-        const cut = (mapNormalizedToRange($mouseX, 200, 2400)).toFixed(2);
-        const freq = (mapNormalizedToRange($mouseY, 40, 160)).toFixed(2);
+        const cut = mapNormalizedToRange($mouseX, 200, 2400).toFixed(2);
+        const freq = mapNormalizedToRange($mouseY, 40, 160).toFixed(2);
 
         faustNode.setParamValue("/sounds/Cutoff", cut);
         faustNode.setParamValue("/sounds/Frequency", freq);
+    }
+
+    // Mouse move handler
+    document.addEventListener("mousemove", (e) => {
+        updateInteraction(e.clientX, e.clientY);
+    });
+
+    // Touch move handler
+    document.addEventListener("touchmove", (e) => {
+        const touch = e.touches[0]; // Get the first touch point
+        updateInteraction(touch.clientX, touch.clientY);
+    });
+
+    // Optional: Touch start for immediate response on tap
+    document.addEventListener("touchstart", (e) => {
+        const touch = e.touches[0];
+        updateInteraction(touch.clientX, touch.clientY);
     });
 
     $buttonDsp.disabled = true; // Disable the button until the DSP is ready
