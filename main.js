@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const canvas = document.getElementById("three-canvas")
 
@@ -39,40 +39,46 @@ scene.add(pointLight1)
 
 let model
 
-// Load OBJ model
-const loader = new OBJLoader();
+// Load GLB model
+const loader = new GLTFLoader();
 loader.load(
-    'assets/logo-model.obj',
-    (object) => {
-        // Center the model pivot
-        const box = new THREE.Box3().setFromObject(object);
-        const center = new THREE.Vector3();
-        box.getCenter(center);
-        object.position.sub(center);
+  'assets/logo-model.glb',
+  (gltf) => {
+    const object = gltf.scene;
 
-        // Initial scale
-        object.scale.set(1, 1, 1);
+    // Center the model pivot
+    const box = new THREE.Box3().setFromObject(object);
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    object.position.sub(center);
 
-        // Apply a metallic material to meshes
-        object.traverse((child) => {
-          if (child.isMesh) {
-            child.material = new THREE.MeshStandardMaterial({
-              color: 0xaaaaaa,
-              metalness: 1.0,
-              roughness: 0.2
-            });
-          }
+    // Initial scale
+    object.scale.set(1, 1, 1);
+
+    // Apply a metallic material to all meshes
+    object.traverse((child) => {
+      if (child.isMesh) {
+        child.material = new THREE.MeshStandardMaterial({
+          color: 0xaaaaaa,
+          metalness: 1.0,
+          roughness: 0.2,
+          flatShading: false,
         });
+        // Ensure the mesh casts and receives shadows if you need them:
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
 
-        model = object;
-        scene.add(model);
-    },
-    (xhr) => {
-        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-    },
-    (error) => {
-        console.error('An error happened while loading the OBJ:', error);
-    }
+    model = object;
+    scene.add(model);
+  },
+  (xhr) => {
+    console.log(`Model ${(xhr.loaded / xhr.total * 100).toFixed(1)}% loaded`);
+  },
+  (error) => {
+    console.error('An error occurred while loading the GLB:', error);
+  }
 );
 
 // Handle window resize
