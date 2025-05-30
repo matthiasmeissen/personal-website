@@ -12,6 +12,7 @@ class SiteNavigation extends HTMLElement {
                         <a href="work.html">Work</a>
                         <a href="ideas.html">Ideas</a>
                         <a href="about.html">About</a>
+                        <a href="https://tally.so/r/wQWzp1" target="_blank">Contact</a>
                     </nav>
                 `;
 
