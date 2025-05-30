@@ -20,12 +20,11 @@ body {
     color: var(--foreground-primary);
     background-color: var(--background-primary);
     margin: 0;
-    overflow: hidden;
 }
 
 h1 {
     font-weight: 900;
-    font-size: 20vw;
+    font-size: max(48px, 12vw);
     line-height: 1.1;
     margin: 0;
 }
@@ -49,18 +48,16 @@ button {
 
 
 canvas {
-    position: fixed;
-    top: 2vw;
-    left: 2vw;
     width: calc(100vw - 4vw);
     height: calc(100vh - 4vw);
+    margin: 2vw;
     border-radius: 12px;
     touch-action: none;
 }
 
 section {
     width: 100vw;
-    height: 100vh;
+    min-height: 40vh;
     position: relative;
     margin: 0 auto;
     padding: 4vw;
@@ -70,8 +67,6 @@ section {
     justify-content: center;
     text-align: center;
     gap: 1rem;
-    z-index: 10;
-    color: #ffffff;
 }
 
 section svg path{
