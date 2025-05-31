@@ -17,6 +17,8 @@
     --font-size-body-m: max(1.2vw, 16px);
 
     --space-s: 2vw;
+
+    --border-radius-m: 1vw;
 }
 
 * {
@@ -54,7 +56,7 @@ button {
     font-family: 'Geist', sans-serif;
     font-size: min(16px, 2vw);
     padding: 4px 8px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-m);
     border: 1px solid #ffffff;
     color: #ffffff;
     background-color: transparent;
@@ -66,7 +68,7 @@ canvas {
     width: calc(100vw - var(--space-s) * 2.0);
     height: calc(100vh - var(--space-s) * 2.0);
     margin: var(--space-s);
-    border-radius: 12px;
+    border-radius: var(--border-radius-m);
     touch-action: none;
 }
 
@@ -106,20 +108,42 @@ nav > div {
   }
 }
 
+/* Layout */
+
 section {
     width: 100vw;
-    min-height: 40vh;
-    position: relative;
     margin: 0 auto;
     padding: var(--space-s);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
     gap: 1rem;
 }
 
-section svg path{
-    stroke: #ffffff;
+section.intro {
+    min-height: 40vh;
+    align-items: center;
+    justify-content: center;
+}
+
+section.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* Teaser */
+
+.teaser-container {
+    width: 100%;
+}
+
+.teaser-image {
+    width: 100%;
+    aspect-ratio: 5/3;
+    background-color: var(--foreground-subtle);
+    border-radius: var(--border-radius-m);
+}
+
+.teaser-title {
+    width: 100%;
+    text-align: left;
 }
