@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Geist';
-    src: url('./assets/GeistVF.woff2') format('woff2');
+    src: url('./assets/fonts/GeistVF.woff2') format('woff2');
     font-weight: 100 900;
     font-style: normal;
 }
@@ -12,7 +12,8 @@
 
 
     --font-family-primary: 'Geist', sans-serif;
-    --font-size-heading: max(48px, 12vw);
+    --font-size-heading-xl: max(48px, 12vw);
+    --font-size-heading-l: max(40px, 8vw);
     --font-size-body-l: max(1.5vw, 20px);
     --font-size-body-m: max(1.2vw, 16px);
 
@@ -32,9 +33,11 @@ body {
     margin: 0;
 }
 
+/* Text Styles */
+
 h1 {
     font-weight: 900;
-    font-size: var(--font-size-heading);
+    font-size: var(--font-size-heading-l);
     line-height: 1.1;
     margin: 0;
 }
@@ -63,6 +66,34 @@ button {
     margin-top: 1vw;
 }
 
+/* Page Home */
+
+.title {
+    display: flex;
+    align-items: baseline;
+    font-size: var(--font-size-heading-xl);
+}
+
+.lower {
+    display: flex;
+    justify-content: center;
+    width: calc(max(14px, calc(var(--font-size-heading-xl) * 0.15)) * 4);
+    font-weight: 300;
+    font-size: max(14px, calc(var(--font-size-heading-xl) * 0.15));
+    overflow: hidden;
+    animation: fade 1.4s ease-in-out 1s forwards;
+}
+
+@keyframes fade {
+  0% {
+    width: calc(max(14px, calc(var(--font-size-heading-xl) * 0.15)) * 4);
+    opacity: 1;
+  }
+  100% {
+    width: 0px;
+    opacity: 0;
+  }
+}
 
 canvas {
     width: calc(100vw - var(--space-s) * 2.0);
@@ -70,42 +101,6 @@ canvas {
     margin: var(--space-s);
     border-radius: var(--border-radius-m);
     touch-action: none;
-}
-
-nav {
-    padding: var(--space-s);
-    display: flex;
-    gap: var(--space-s);
-}
-
-nav > div {
-    width: 100%;
-}
-
-.title {
-    display: flex;
-    align-items: baseline;
-}
-
-.lower {
-    display: flex;
-    justify-content: center;
-    width: calc(max(14px, calc(var(--font-size-heading) * 0.15)) * 4);
-    font-weight: 300;
-    font-size: max(14px, calc(var(--font-size-heading) * 0.15));
-    overflow: hidden;
-    animation: fade 1.4s ease-in-out 1s forwards;
-}
-
-@keyframes fade {
-  0% {
-    width: calc(max(14px, calc(var(--font-size-heading) * 0.15)) * 4);
-    opacity: 1;
-  }
-  100% {
-    width: 0px;
-    opacity: 0;
-  }
 }
 
 /* Layout */
@@ -130,7 +125,19 @@ section.grid {
     grid-template-columns: 1fr 1fr;
 }
 
-/* Teaser */
+/* Component Navigation */
+
+.navigation-container {
+    padding: var(--space-s);
+    display: flex;
+    gap: var(--space-s);
+}
+
+.navigation-container > div {
+    width: 100%;
+}
+
+/* Component Teaser */
 
 .teaser-container {
     width: 100%;
@@ -141,6 +148,9 @@ section.grid {
     aspect-ratio: 5/3;
     background-color: var(--foreground-subtle);
     border-radius: var(--border-radius-m);
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
 }
 
 .teaser-title {

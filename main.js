@@ -42,7 +42,7 @@ let model
 // Load GLB model
 const loader = new GLTFLoader();
 loader.load(
-  'assets/logo-model.glb',
+  'assets/models/logo-model.glb',
   (gltf) => {
     const object = gltf.scene;
 
