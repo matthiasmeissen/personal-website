@@ -14,10 +14,12 @@
     --font-family-primary: 'Geist', sans-serif;
     --font-size-heading-xl: max(48px, 12vw);
     --font-size-heading-l: max(40px, 8vw);
+    --font-size-heading-s: max(20px, 2vw);
     --font-size-body-l: max(1.5vw, 20px);
     --font-size-body-m: max(1.2vw, 16px);
 
     --space-s: 2vw;
+    --space-xs: 1vw;
 
     --border-radius-m: 1vw;
 }
@@ -42,6 +44,13 @@ h1 {
     margin: 0;
 }
 
+h2 {
+    font-weight: 900;
+    font-size: var(--font-size-heading-s);
+    line-height: 1.1;
+    margin: 0;
+}
+
 p {
     font-size: var(--font-size-body-l);
     font-weight: 300;
@@ -53,6 +62,13 @@ a {
     font-weight: 300;
     text-decoration: none;
     color: var(--foreground-primary);
+    text-underline-offset: 0em;
+    transition: all 0.2s ease-in-out;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
 }
 
 button {
@@ -156,4 +172,5 @@ section.grid {
 .teaser-title {
     width: 100%;
     text-align: left;
+    margin-top: var(--space-xs);
 }
