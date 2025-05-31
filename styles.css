@@ -146,6 +146,7 @@ section.grid {
 .navigation-container {
     padding: var(--space-s);
     display: flex;
+    align-items: flex-start;
     gap: var(--space-s);
 }
 
