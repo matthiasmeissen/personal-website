@@ -5,7 +5,7 @@ use tera::{Context, Tera};
 
 
 const CONTENT_DIR: &str = "src/content";
-const STYLE_DIR: &str = "src/styles";
+const STATIC_DIR: &str = "src/static";
 const OUTPUT_DIR: &str = "dist";
 const TEMPLATE_DIR: &str = "src/templates/**/*.html";
 
@@ -19,7 +19,7 @@ fn main() {
 
     process_file("index.html", "index.html", &tera);
 
-    copy_css_files("global.css");
+    copy_static_file("global.css");
 }
 
 
@@ -65,8 +65,8 @@ fn prepare_output_dir() {
     fs::create_dir_all(OUTPUT_DIR).expect("Failed to create dist directory.");
 }
 
-fn copy_css_files(file_name: &str) {
-    let source = format!("{STYLE_DIR}/{file_name}");
+fn copy_static_file(file_name: &str) {
+    let source = format!("{STATIC_DIR}/{file_name}");
     let dest = format!("{OUTPUT_DIR}/{file_name}");
-    fs::copy(source, dest).expect("Could not copy css file.");
+    fs::copy(source, dest).expect("Could not copy static file.");
 }
