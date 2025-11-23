@@ -15,17 +15,15 @@ fn main() {
 
     prepare_output_dir();
 
-    process_md_to_html_file("test.md", "index.html", "index.html", &tera);
+    process_file("test.md", "test.html", &tera);
+
+    process_file("index.html", "index.html", &tera);
 
     copy_css_files("global.css");
 }
 
 
 // Markdown to html
-
-fn read_md_file(input_path: &str) -> String {
-    fs::read_to_string(input_path).expect("Could not read md file")
-}
 
 fn md_to_html(md: &str) -> String {
     let parser = pulldown_cmark::Parser::new(md);
@@ -34,19 +32,27 @@ fn md_to_html(md: &str) -> String {
     html_output
 }
 
-fn html_to_template(input_html: &str, html_template: &str, tera: &Tera) -> String {
+fn inject_into_template(input: &str, html_template: &str, tera: &Tera) -> String {
     let mut context = Context::new();
-    context.insert("content", &input_html);
+    context.insert("content", &input);
 
     tera.render(html_template, &context).unwrap()
 }
 
-fn process_md_to_html_file(file_name: &str, template_name: &str, target_name: &str, tera: &Tera) {
-    let md_file = read_md_file(format!("{CONTENT_DIR}/{file_name}").as_str());
-    let raw_html = md_to_html(&md_file);
-    let final_html = html_to_template(&raw_html, template_name, tera);
+fn process_file(filename: &str, output_name: &str, tera: &Tera) {
+    let input_path = format!("{}/{}", CONTENT_DIR,filename);
 
-    fs::write(format!("{OUTPUT_DIR}/{target_name}"), final_html).expect("Could not write html file.");
+    let file_content = fs::read_to_string(&input_path).expect(&format!("Failed to read {}", input_path));
+
+    let final_content = if filename.ends_with(".md") {
+        md_to_html(&file_content)
+    } else {
+        file_content
+    };
+
+    let final_page = inject_into_template(&final_content, "base.html", tera);
+
+    fs::write(format!("{}/{}", OUTPUT_DIR, output_name), final_page).expect("Could not write output file.")
 }
 
 
