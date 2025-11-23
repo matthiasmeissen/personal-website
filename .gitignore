@@ -5,4 +5,4 @@
 **/*.rs.bk
 
 # Ignore Cargo.lock for libraries (keep it for binaries)
-/Cargo.lock
+/Cargo.lock%
