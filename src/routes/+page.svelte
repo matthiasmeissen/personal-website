@@ -1,2 +1,20 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+    import Teaser from "$lib/components/Teaser.svelte";
+</script>
+
+<main>
+    <section class="block">
+        <h1>MMN Earth</h1>
+        <p>Design Engineering</p>
+    </section>
+
+    <section class="block grid">
+        <Teaser />
+        <Teaser />
+    </section>
+
+</main>
+
+<style>
+
+</style>
