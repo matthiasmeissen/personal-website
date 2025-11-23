@@ -1,14 +1,18 @@
 <script>
-
+    let { 
+		title = 'Course Title',
+		details = 'Course description',
+        target = "/"
+	} = $props();
 </script>
 
-<div class="container">
+<a class="container" href={target}>
     <div class="image"></div>
     <div class="text">
-        <h3>Title</h3>
-        <p>Details</p>
+        <h3>{title}</h3>
+        <p>{details}</p>
     </div>
-</div>
+</a>
 
 <style>
     .container {
@@ -16,6 +20,11 @@
         display: flex;
         flex-direction: column;
         gap: var(--spacing-sm);
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--color-foreground-primary);
     }
 
     .image {

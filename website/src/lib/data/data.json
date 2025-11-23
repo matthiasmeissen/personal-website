@@ -1,0 +1,16 @@
+{
+  "projects": [
+    {
+      "slug": "project1",
+      "title": "Project 1",
+      "details": "MMN-OBJ-001",
+      "markdown": "# Project 1 Title\n\nThis project explores..."
+    },
+    {
+      "slug": "project2",
+      "title": "Project 2",
+      "details": "MMN-AWK-001",
+      "markdown": "# Project 2 Title\n\nThis project explores..."
+    }
+  ]
+}
