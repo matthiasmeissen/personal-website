@@ -1,9 +1,13 @@
 ---
-import Logo from '../assets/logo.svg'
+import Logo from '../assets/logo.svg?raw'
 ---
 
 <nav>
-    <a href="/"><img class="logo" src={Logo.src}></a>
+    <a href="/">
+        <div class="logo-wrapper">
+            <Fragment set:html={Logo} />        
+        </div>
+    </a>
 
     <div>
         <a href="#">Work</a>
@@ -21,8 +25,9 @@ import Logo from '../assets/logo.svg'
         justify-content: space-between;
     }
 
-    .logo {
+    .logo-wrapper :global(svg) {
         width: 48px;
-        filter: invert(1);
+        height: 48px;
+        stroke: var(--color-foreground-primary);
     }
 </style>
