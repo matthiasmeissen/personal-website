@@ -2,7 +2,7 @@
 use std::{fs, path::Path};
 use pulldown_cmark;
 use tera::{Context, Tera};
-use lol_html::{element, HtmlRewriter, Settings, html_content::ContentType}; 
+use lol_html::{element, HtmlRewriter, Settings, html_content::{ContentType, Element}}; 
 
 
 const CONTENT_DIR: &str = "src/content";
@@ -36,41 +36,41 @@ fn md_to_html(md: &str) -> String {
 fn inject_html_components(html_content: &str, tera: &Tera) -> String {
     let mut output = vec![];
 
-    // Initialize the rewriter
     let mut rewriter = HtmlRewriter::new(
         Settings {
             element_content_handlers: vec![
-                // Define the <info-card> component logic here
                 element!("info-card", |el| {
-                    // 1. Get parameters from the tag (e.g. title="...")
-                    let title = el.get_attribute("title").unwrap_or_default();
-                    let text = el.get_attribute("text").unwrap_or_default();
+                    render_component(el, tera, "components/info_card.html")
+                }),
 
-                    // 2. Put them into a Context for Tera
-                    let mut context = Context::new();
-                    context.insert("title", &title);
-                    context.insert("text", &text);
-
-                    // 3. Render the specific component template
-                    let rendered_html = tera.render("components/info_card.html", &context).unwrap();
-
-                    // 4. Replace the original <info-card> tag with the new HTML
-                    el.replace(&rendered_html, ContentType::Html);
-
-                    Ok(())
-                })
+                element!("my-button", |el| {
+                    render_component(el, tera, "components/button.html")
+                }),
             ],
             ..Settings::default()
         },
         |c: &[u8]| output.extend_from_slice(c),
     );
 
-    // Process the string
     rewriter.write(html_content.as_bytes()).unwrap();
     rewriter.end().unwrap();
 
-    // Return the new HTML string
     String::from_utf8(output).unwrap()
+}
+
+fn render_component(el: &mut Element, tera: &Tera, template_name: &str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    let mut context = Context::new();
+
+    for attr in el.attributes() {
+        context.insert(attr.name(), &attr.value());
+    }
+
+    let rendered = tera.render(template_name, &context)
+        .map_err(|e| Box::new(e) as Box<dyn std::error::Error + Send + Sync>)?;
+
+    el.replace(&rendered, ContentType::Html);
+
+    Ok(())
 }
 
 fn inject_into_template(input: &str, html_template: &str, tera: &Tera) -> String {
