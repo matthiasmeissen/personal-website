@@ -17,10 +17,10 @@ fn main() {
     prepare_output_dir();
 
     process_file("test.md", "test.html", &tera);
-
     process_file("index.html", "index.html", &tera);
 
     copy_static_file("global.css");
+    copy_static_file("components.css");
 }
 
 
