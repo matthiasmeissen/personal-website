@@ -16,11 +16,12 @@ fn main() {
 
     prepare_output_dir();
 
-    process_file("test.md", "test.html", &tera);
     process_file("index.html", "index.html", &tera);
+    process_file("bike-tribals.md", "bike-tribals.html", &tera);
 
     copy_static_file("global.css");
     copy_static_file("components.css");
+    copy_static_file("bike-tribal.svg");
 }
 
 
@@ -43,8 +44,8 @@ fn inject_html_components(html_content: &str, tera: &Tera) -> String {
                     render_component(el, tera, "components/info_card.html")
                 }),
 
-                element!("my-button", |el| {
-                    render_component(el, tera, "components/button.html")
+                element!("project-teaser", |el| {
+                    render_component(el, tera, "components/project-teaser.html")
                 }),
             ],
             ..Settings::default()

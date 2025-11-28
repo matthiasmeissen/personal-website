@@ -3,7 +3,8 @@
 
 :root {
     --color-foreground-primary: #ffffff;
-    --color-background-primary: #121212;
+    --color-background-primary: #0e0e0e;
+    --color-background-subtle: #141414;
 
     --font-family-primary: 'Geist', sans-serif;
     --font-family-decortaive: 'Libre Baskerville', serif;
@@ -21,7 +22,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -43,4 +44,12 @@ section {
 .heading-lg {
     font-family: var(--font-family-decortaive);
     font-size: 32px;
+}
+
+a {
+    color: var(--color-foreground-primary);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
 }
