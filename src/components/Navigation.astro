@@ -1,0 +1,28 @@
+---
+import Logo from '../assets/logo.svg'
+---
+
+<nav>
+    <a><img class="logo" src={Logo.src}></a>
+
+    <div>
+        <a>Work</a>
+        <a>Write</a>
+    </div>
+</nav>
+
+<style>
+    nav {
+        position: fixed;
+        width: 100%;
+        padding: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        width: 48px;
+        filter: invert(1);
+    }
+</style>
