@@ -1,7 +1,7 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation.astro';
+import ProjectTeaser from '../components/ProjectTeaser.astro';
 ---
 
 <Layout>
@@ -10,14 +10,17 @@ import Navigation from '../components/Navigation.astro';
 	<section class="intro">
 		<h1 class="heading-lg">Design Engineering</h1>
 	</section>
+
+	<ProjectTeaser />
 </Layout>
 
 <style>
 	.intro {
 		width: 100%;
-		height: 80vh;
+		height: 60vh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		padding: 32px;
 	}
 </style>

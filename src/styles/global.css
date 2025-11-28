@@ -10,8 +10,8 @@
     --font-family-decorative: 'Libre Baskerville', serif;
 
     --font-size-lg: 3rem;
-    --font-size-md: 1rem;
-    --font-size-sm: 0.75rem;
+    --font-size-md: 1.5rem;
+    --font-size-sm: 1rem;
 
     --font-weight-primary: 400;
     --font-weight-emphasis: 700;
@@ -29,6 +29,15 @@ body {
 
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+}
+
+a {
+    font-size: var(--font-size-sm);
+    color: var(--color-foreground-primary);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
 }
 
 .heading-lg {
