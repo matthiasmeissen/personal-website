@@ -1,33 +1,26 @@
----
-import Logo from '../assets/logo.svg?raw'
----
-
 <nav>
-    <a href="/">
-        <div class="logo-wrapper">
-            <Fragment set:html={Logo} />        
-        </div>
-    </a>
-
-    <div>
-        <a href="#">Work</a>
-        <a href="#">Write</a>
-    </div>
+    <a href="#">Work</a>
+    <a href="#">Write</a>
+    <a href="#">About</a>
 </nav>
 
 <style>
     nav {
         position: fixed;
-        width: 100%;
-        padding: 32px;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        gap: 12px;
+        background-color: #D8D8D8;
+        border-radius: 40px;
+        z-index: 10;
     }
 
-    .logo-wrapper :global(svg) {
-        width: 48px;
-        height: 48px;
-        stroke: var(--color-foreground-primary);
+    a {
+        color: #181818;
+        font-family: var(--font-family-decorative);
+        font-size: var(--font-size-md);
     }
 </style>

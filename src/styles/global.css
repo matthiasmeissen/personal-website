@@ -3,15 +3,18 @@
 
 :root {
     --color-foreground-primary: #ffffff;
-    --color-background-primary: #0f0f0f;
-    --color-background-subtle: #212121;
+    --color-foreground-subtle: #919191;
+    --color-foreground-muted: #5f5f5f;
+    
+    --color-background-primary: #0e0e0e;
+    --color-background-subtle: #141414;
 
     --font-family-primary: 'Geist', sans-serif;
     --font-family-decorative: 'Libre Baskerville', serif;
 
-    --font-size-lg: 3rem;
-    --font-size-md: 1.5rem;
-    --font-size-sm: 1rem;
+    --font-size-lg: clamp(2rem, 3vw, 4rem);
+    --font-size-md: clamp(1rem, 1.2vw, 1.125rem);
+    --font-size-sm: clamp(0.875rem, 0.9vw, 1.125rem);
 
     --font-weight-primary: 400;
     --font-weight-emphasis: 700;
@@ -19,11 +22,11 @@
 
 * {
     box-sizing: border-box;
+    margin: 0;
 }
 
 body {
     font-family: var(--font-family-primary);
-    margin: 0;
     color: var(--color-foreground-primary);
     background-color: var(--color-background-primary);
 

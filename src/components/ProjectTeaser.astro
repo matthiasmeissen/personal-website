@@ -1,138 +1,110 @@
 ---
-interface Props {
-    id: string;
-    title: string;
-    link: string;
-    svgName: string; // e.g., "bike-tribal.svg"
+import type { ImageMetadata } from 'astro';
+
+const { 
+    id = "mmn-obj-001", 
+    title = "Title", 
+    link = "#",
+    imageName = "bike-tribal.svg"
+} = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>('../assets/*.{svg,png,jpg,jpeg,webp}');
+
+const imagePath = `../assets/${imageName}`;
+
+if (!images[imagePath]) {
+    throw new Error(`[TeaserCard] Image "${imagePath}" not found. Is it in src/assets/?`);
 }
 
-const { id, title, link, svgName } = Astro.props;
-
-/* 
-   DYNAMIC SVG LOADING
-   1. glob: Grab all .svg files in ../assets/
-   2. query: '?raw' imports them as strings (code) instead of URLs
-   3. import: 'default' gives us the string directly
-*/
-const svgs = import.meta.glob('../assets/*.svg', { 
-    query: '?raw', 
-    import: 'default' 
-});
-
-// Construct the lookup key (must match the file structure relative to this component)
-const svgPath = `../assets/${svgName}`;
-
-// Validate that the file exists
-if (!(svgPath in svgs)) {
-    throw new Error(`[TeaserCard] SVG not found: "${svgPath}". Check filename in src/assets/`);
-}
-
-// Load the specific SVG
-const loadSvg = svgs[svgPath];
-const SVG = await loadSvg() as string;
+const imageModule = await images[imagePath]();
+const imageSrc = imageModule.default.src;
 ---
 
+
 <div class="container">
-    <!-- Foreground Card -->
     <a href={link} class="card">
-        <div class="top">{id}</div>
-        <div class="svg">
-            <Fragment set:html={SVG} />
-        </div>
-        <div class="bottom">{title}</div>
+        <div class="id">{id}</div>
+        <div class="image" style={`background-image: url(${imageSrc});`}></div>
+        <div class="title">{title}</div>
     </a>
 
-    <!-- Background Layer -->
-    <div class="background-svg">
-        <Fragment set:html={SVG} />
-    </div>
+    <div class="background-image" style={`background-image: url(${imageSrc});`}></div>
 </div>
-
 
 <style>
     .container {
-        position: relative; 
-        
-        width: 100%;
-        max-width: 1200px;
-        aspect-ratio: 4/3;
-        
+        position: relative;
+        width: 100vw;
+        height: 100vh;
         display: flex;
-        justify-content: center;
         align-items: center;
-        margin: 0 auto;
-        overflow: hidden; 
+        justify-content: center;
+        padding: 48px;
     }
 
     .card {
-        position: relative; 
-        z-index: 1;
-        
-        width: max(20vw, 280px);
-        aspect-ratio: 1/1;
+        width: 100%;
+        max-width: 780px;
+        aspect-ratio: 3/2;
         background-color: var(--color-background-subtle);
-        padding: 20px;
         border-radius: 12px;
         display: flex;
         flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        border: 1px solid var(--color-foreground-muted);
         text-decoration: none;
-        color: inherit;
         transition: all 0.2s ease-in-out;
+        z-index: 1;
     }
-    .card:hover,
-    .card:focus {
-        filter: invert(1);
-        transform: scale(1.02);
-    }
-
-    .top, .bottom {
-        flex-shrink: 0;
+    .card:hover {
+        transform: scale(1.01);
+        border-color: var(--color-foreground-subtle);
+        cursor: pointer;
     }
 
-    .top {
-        text-align: end;
+    .id {
+        font-size: var(--font-size-sm);
+        padding: 4px 8px;
+        color: var(--color-foreground-subtle);
+        border: 1px solid var(--color-foreground-subtle);
+        border-radius: 20px;
+        width: fit-content;
+        place-self: flex-end;
     }
 
-    .svg {
-        width: 100%;
-        min-height: 0;
+    .image {
         flex-grow: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        height: fit-content;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 
-    .container :global(svg) {
-        stroke: var(--color-foreground-primary);
-        fill: none;
-        vector-effect: non-scaling-stroke;
-    }
-
-    .svg :global(svg) {
-        width: 100%;
-        height: 100%;
-        max-height: 100%;
-    }
-
-    .background-svg {
+    .background-image {
         position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
-        
-        z-index: 0; 
-        opacity: 0.2; 
-        pointer-events: none;
-        
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        opacity: 10%;
     }
 
-    .background-svg :global(svg) {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; 
+    .title {
+        font-size: var(--font-size-md);
+    }
+
+    @media (max-width: 520px) {
+        .container {
+            height: 80vh;
+            padding: 32px;
+        }
+        .card {
+            aspect-ratio: 1/1;
+        }
+        .background-image {
+            background-size: cover;
+        }
     }
 </style>

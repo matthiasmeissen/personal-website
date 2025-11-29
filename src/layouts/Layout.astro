@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import TopNavigation from '../components/TopNavigation.astro';
+import Navigation from '../components/Navigation.astro';
 ---
 
 
@@ -13,6 +15,8 @@ import '../styles/global.css';
 		<title>Astro Basics</title>
 	</head>
 	<body>
+		<TopNavigation />
 		<slot />
+		<Navigation />
 	</body>
 </html>
