@@ -60,11 +60,7 @@ const SVG = await loadSvg() as string;
         display: flex;
         justify-content: center;
         align-items: center;
-        
-        padding: 32px;
         margin: 0 auto;
-        
-
         overflow: hidden; 
     }
 
@@ -72,9 +68,8 @@ const SVG = await loadSvg() as string;
         position: relative; 
         z-index: 1;
         
-        width: 100%;
-        max-width: 480px;
-        aspect-ratio: 4/3;
+        width: max(20vw, 280px);
+        aspect-ratio: 1/1;
         background-color: var(--color-background-subtle);
         padding: 20px;
         border-radius: 12px;
