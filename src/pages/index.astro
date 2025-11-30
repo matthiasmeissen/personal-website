@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Intro from '../components/Intro.astro';
 import ProjectTeaser from '../components/ProjectTeaser.astro';
 import Shader from '../components/Shader.astro';
 
@@ -7,12 +8,7 @@ import shader01 from '../assets/shaders/shader-01.frag?raw';
 ---
 
 <Layout>
-	<section class="intro">
-		<div>
-			<h1 class="heading-lg">Design Engineering</h1>
-			<p>by matthiasmeissen</p>
-		</div>
-	</section>
+	<Intro />
 
 	<Shader code={shader01} />
 
@@ -30,22 +26,3 @@ import shader01 from '../assets/shaders/shader-01.frag?raw';
         svgName="bike-tribal.svg" 
     />
 </Layout>
-
-<style>
-	.intro {
-		width: 100%;
-		height: 40vh;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: flex-end;
-		padding: 32px;
-	}
-
-	p {
-		font-size: var(--font-size-sm);
-		text-align: end;
-		color: var(--color-foreground-subtle);
-		padding-top: 8px;
-	}
-</style>
