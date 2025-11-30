@@ -12,6 +12,14 @@
     --font-family-primary: 'Geist', sans-serif;
     --font-family-decorative: 'Libre Baskerville', serif;
 
+    --space-lg: clamp(32px, 4vw, 48px);
+    --space-md: clamp(20px, 3vw, 32px);
+    --space-sm: clamp(16px, 2vw, 20px);
+    --space-xs: clamp(12px, 1vw, 16px);
+
+    --space-content-lg: 1200px;
+    --space-content-md: 820px;
+
     --font-size-lg: clamp(2rem, 3vw, 4rem);
     --font-size-md: clamp(1rem, 1.2vw, 1.125rem);
     --font-size-sm: clamp(0.875rem, 0.9vw, 1.125rem);

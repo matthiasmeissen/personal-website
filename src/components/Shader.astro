@@ -14,7 +14,7 @@ const { code } = Astro.props;
 <style>
   .shader-container {
     width: 100%;
-    padding: 32px;
+    padding: var(--space-md);
     position: relative;
     display: flex;
     justify-content: center;
@@ -23,7 +23,7 @@ const { code } = Astro.props;
   canvas {
     display: block;
     width: 80vw;
-    max-width: 1200px;
+    max-width: var(--space-content-lg);
     aspect-ratio: 5/3;
     border-radius: 12px;
   }
