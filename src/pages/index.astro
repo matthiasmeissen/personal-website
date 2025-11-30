@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Intro from '../components/Intro.astro';
 import Shader from '../components/Shader.astro';
 import ProjectTeaserText from '../components/ProjectTeaserText.astro';
+import Block from '../components/Block.astro';
 
 import shader01 from '../assets/shaders/shader-01.frag?raw';
 ---
@@ -10,10 +11,11 @@ import shader01 from '../assets/shaders/shader-01.frag?raw';
 <Layout>
 	<Intro />
 
-    
 	<Shader code={shader01} />
-    
-    <ProjectTeaserText />
-    <ProjectTeaserText />
-    <ProjectTeaserText />
+
+    <Block>
+        <ProjectTeaserText />
+        <ProjectTeaserText />
+        <ProjectTeaserText />
+    </Block>
 </Layout>
