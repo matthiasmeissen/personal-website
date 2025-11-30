@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Intro from '../components/Intro.astro';
 import ProjectTeaser from '../components/ProjectTeaser.astro';
+import ProjectTeaserText from '../components/ProjectTeaserText.astro';
 import Shader from '../components/Shader.astro';
 
 import shader01 from '../assets/shaders/shader-01.frag?raw';
@@ -10,19 +11,10 @@ import shader01 from '../assets/shaders/shader-01.frag?raw';
 <Layout>
 	<Intro />
 
+    
 	<Shader code={shader01} />
-
-	<ProjectTeaser
-        id="mmn-obj-002" 
-        title="Bike Tribals" 
-        link="#" 
-        svgName="bike-tribal.svg" 
-    />
-
-	<ProjectTeaser
-        id="mmn-obj-002" 
-        title="Bike Tribals" 
-        link="#" 
-        svgName="bike-tribal.svg" 
-    />
+    
+    <ProjectTeaserText />
+    <ProjectTeaserText />
+    <ProjectTeaserText />
 </Layout>
