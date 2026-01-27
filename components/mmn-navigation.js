@@ -25,10 +25,10 @@ class MmnNavigation extends HTMLElement {
 
             mmn-navigation > nav {
                 position: fixed;
-                bottom: 32px;
+                bottom: var(--size-md);
                 left: 50%;
                 transform: translateX(-50%);
-                padding: 10px 20px;
+                padding: var(--size-xs) var(--size-md);
                 display: flex;
                 gap: var(--size-sm);
                 background-color: #D8D8D8;
