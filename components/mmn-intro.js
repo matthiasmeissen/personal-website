@@ -2,8 +2,9 @@
 class MmnIntro extends HTMLElement {
     connectedCallback() {
         this.innerHTML = /*HTML*/`
-            <h1 class="heading-lg">Design Engineering</h1>
-	        <p>by matthiasmeissen</p>
+            <h1>Do more with less</h1>
+            <mmn-glyphnavigation></mmn-glyphnavigation>
+            <div class="subline">Design Engineering by matthiasmeissen</div>
         `
 
         this.injectStyles();
@@ -17,32 +18,27 @@ class MmnIntro extends HTMLElement {
         style.id = styleId;
         style.textContent = /*CSS*/`
             mmn-intro {
-                width: fit-content;
+                width: 100vw;
+                height: 100vh;
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
                 align-items: center;
-                margin: 30vh auto 20vh;
-                padding: 32px;
+                gap: var(--size-md);
             }
 
-            mmn-intro > p {
-                width: 100%;
+            mmn-intro > mmn-glyphnavigation {
+                position: initial;
+                transform: unset;
+                max-width: 820px;
+            }
+
+            mmn-intro > h1 {
+                font-size: var(--size-xl);
+            }
+
+            mmn-intro > .subline {
                 font-size: var(--size-md);
-                text-align: end;
-                color: var(--color-foreground-subtle);
-                padding-top: 8px;
-            }
-
-            @media (max-width: 420px) {
-                mmn-intro {
-                    margin: 25vh auto 10vh;
-                }
-                mmn-intro > h1 {
-                    text-align: center;
-                }
-                mmn-intro > p {
-                    text-align: center;
-                }
             }
         `
 
