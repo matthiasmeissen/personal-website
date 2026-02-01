@@ -36,7 +36,7 @@ class MmnGlyphNavigation extends HTMLElement {
                 width: 100%;
                 max-width: 420px;
                 position: fixed;
-                bottom: var(--size-2xl);
+                bottom: var(--size-xl);
                 left: 50%;
                 transform: translateX(-50%);
                 fill: var(--color-foreground-muted);

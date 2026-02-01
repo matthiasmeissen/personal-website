@@ -2,8 +2,8 @@
 class MmnIntro extends HTMLElement {
     connectedCallback() {
         this.innerHTML = /*HTML*/`
-            <h1 class="heading-lg">Design Engineering</h1>
-	        <p>by matthiasmeissen</p>
+            <h1 class="heading-lg">Do less with more</h1>
+	        <p>Design Engineering</p>
         `
 
         this.injectStyles();
