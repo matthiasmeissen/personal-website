@@ -6,6 +6,14 @@ function postUrlFromUri(uri) {
     return `https://bsky.app/profile/${did}/post/${rkey}`;
 }
 
+function parseTagList(value) {
+    if (!value) return [];
+    return value
+        .split(/[,\s]+/)
+        .map((t) => t.replace(/^#/, '').trim().toLowerCase())
+        .filter(Boolean);
+}
+
 async function fetchByAuthorFeed(handle, limit) {
     const url = new URL('https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed');
     url.searchParams.set('actor', handle);
@@ -31,13 +39,22 @@ async function fetchBySearch(handle, tag, limit) {
 
 class MmnBskyFeed extends HTMLElement {
     connectedCallback() {
-        const status = document.createElement('div');
-        status.className = 'mmn-bskyfeed-status';
-        status.textContent = 'Loading…';
-        this.replaceChildren(status);
-
         this.injectStyles();
         this.setupPlayOneAtATime();
+
+        this.availableTags = parseTagList(this.getAttribute('tags'));
+        const initialTag = (this.getAttribute('tag') || '').replace(/^#/, '').toLowerCase();
+        this.activeTag = initialTag || null;
+
+        this.tagBar = this.availableTags.length ? this.renderTagBar() : null;
+        this.content = document.createElement('div');
+        this.content.className = 'mmn-bskyfeed-content';
+
+        const children = [];
+        if (this.tagBar) children.push(this.tagBar);
+        children.push(this.content);
+        this.replaceChildren(...children);
+
         this.loadFeed();
     }
 
@@ -51,25 +68,71 @@ class MmnBskyFeed extends HTMLElement {
         }, true);
     }
 
+    renderTagBar() {
+        const nav = document.createElement('nav');
+        nav.className = 'mmn-bskyfeed-tags';
+
+        const makeButton = (label, value) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'mmn-bskyfeed-tag';
+            btn.textContent = label;
+            btn.dataset.tag = value || '';
+            if ((value || null) === this.activeTag) btn.setAttribute('aria-pressed', 'true');
+            btn.addEventListener('click', () => this.selectTag(value || null));
+            return btn;
+        };
+
+        nav.appendChild(makeButton('All', null));
+        for (const tag of this.availableTags) {
+            nav.appendChild(makeButton(`#${tag}`, tag));
+        }
+        return nav;
+    }
+
+    selectTag(tag) {
+        if (this.activeTag === tag) return;
+        this.activeTag = tag;
+
+        if (this.tagBar) {
+            this.tagBar.querySelectorAll('.mmn-bskyfeed-tag').forEach((btn) => {
+                const value = btn.dataset.tag || null;
+                if (value === this.activeTag) {
+                    btn.setAttribute('aria-pressed', 'true');
+                } else {
+                    btn.removeAttribute('aria-pressed');
+                }
+            });
+        }
+
+        this.loadFeed();
+    }
+
     async loadFeed() {
         const handle = this.getAttribute('handle');
         const limit = this.getAttribute('limit') || '25';
-        const tag = (this.getAttribute('tag') || '').replace(/^#/, '').toLowerCase();
+        const tag = this.activeTag;
 
         if (!handle) {
-            this.showError('Missing handle.');
+            this.showStatus('Missing handle.');
             return;
         }
+
+        this.showStatus('Loading…');
+
+        const requestId = ++this.requestSeq || (this.requestSeq = 1);
 
         try {
             const posts = tag
                 ? await fetchBySearch(handle, tag, limit)
                 : await fetchByAuthorFeed(handle, limit);
 
+            if (requestId !== this.requestSeq) return;
+
             const videos = posts.filter((p) => p?.embed?.$type === 'app.bsky.embed.video#view');
 
             if (videos.length === 0) {
-                this.showError(tag ? `No video posts tagged #${tag}.` : 'No video posts found.');
+                this.showStatus(tag ? `No video posts tagged #${tag}.` : 'No video posts found.');
                 return;
             }
 
@@ -85,18 +148,19 @@ class MmnBskyFeed extends HTMLElement {
                 grid.appendChild(card);
             }
 
-            this.replaceChildren(grid);
+            this.content.replaceChildren(grid);
         } catch (err) {
+            if (requestId !== this.requestSeq) return;
             console.error('mmn-bskyfeed:', err);
-            this.showError("Couldn't load posts.");
+            this.showStatus("Couldn't load posts.");
         }
     }
 
-    showError(message) {
+    showStatus(message) {
         const status = document.createElement('div');
         status.className = 'mmn-bskyfeed-status';
         status.textContent = message;
-        this.replaceChildren(status);
+        this.content.replaceChildren(status);
     }
 
     injectStyles() {
@@ -112,6 +176,34 @@ class MmnBskyFeed extends HTMLElement {
                 margin: 0 auto;
                 padding: var(--size-lg);
                 padding-bottom: calc(var(--size-xl) * 3);
+            }
+
+            mmn-bskyfeed .mmn-bskyfeed-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--size-xs);
+                margin-bottom: var(--size-lg);
+            }
+
+            mmn-bskyfeed .mmn-bskyfeed-tag {
+                font-family: inherit;
+                font-size: var(--size-sm);
+                color: var(--color-foreground-subtle);
+                background: var(--color-background-subtle);
+                border: none;
+                border-radius: 999px;
+                padding: calc(var(--size-xs) / 2) var(--size-sm);
+                cursor: pointer;
+                transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+            }
+
+            mmn-bskyfeed .mmn-bskyfeed-tag:hover {
+                color: var(--color-foreground-primary);
+            }
+
+            mmn-bskyfeed .mmn-bskyfeed-tag[aria-pressed="true"] {
+                color: var(--color-background-primary);
+                background: var(--color-foreground-primary);
             }
 
             mmn-bskyfeed .mmn-bskyfeed-grid {
