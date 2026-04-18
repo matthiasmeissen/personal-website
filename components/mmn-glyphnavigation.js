@@ -36,10 +36,24 @@ class MmnGlyphNavigation extends HTMLElement {
                 max-width: 420px;
                 position: fixed;
                 bottom: var(--size-md);
-                left: 50%;
-                transform: translateX(-50%);
+                left: 0;
+                right: 0;
+                margin-inline: auto;
                 fill: var(--color-foreground-subtle);
                 padding-inline: var(--size-md);
+                isolation: isolate;
+            }
+
+            mmn-glyphnavigation::before {
+                content: '';    
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: calc(var(--size-2xl) * 4);
+                background: linear-gradient(to top, var(--color-background-primary), transparent);
+                pointer-events: none;
+                z-index: -1;
             }
 
             mmn-glyphnavigation .letter:hover {
