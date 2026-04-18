@@ -6,6 +6,24 @@ function postUrlFromUri(uri) {
     return `https://bsky.app/profile/${did}/post/${rkey}`;
 }
 
+function postHasTag(post, tag) {
+    const record = post?.record;
+    if (!record) return false;
+
+    const facets = record.facets || [];
+    for (const facet of facets) {
+        for (const feature of (facet.features || [])) {
+            if (feature.$type === 'app.bsky.richtext.facet#tag' &&
+                (feature.tag || '').toLowerCase() === tag) {
+                return true;
+            }
+        }
+    }
+
+    const tags = record.tags || [];
+    return tags.some((t) => (t || '').toLowerCase() === tag);
+}
+
 class MmnBskyFeed extends HTMLElement {
     connectedCallback() {
         const status = document.createElement('div');
@@ -31,6 +49,7 @@ class MmnBskyFeed extends HTMLElement {
     async loadFeed() {
         const handle = this.getAttribute('handle');
         const limit = this.getAttribute('limit') || '12';
+        const tag = (this.getAttribute('tag') || '').replace(/^#/, '').toLowerCase();
 
         if (!handle) {
             this.showError('Missing handle.');
@@ -47,12 +66,16 @@ class MmnBskyFeed extends HTMLElement {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const { feed } = await res.json();
 
-            const videos = (feed || [])
+            let videos = (feed || [])
                 .map((item) => item.post)
                 .filter((post) => post?.embed?.$type === 'app.bsky.embed.video#view');
 
+            if (tag) {
+                videos = videos.filter((post) => postHasTag(post, tag));
+            }
+
             if (videos.length === 0) {
-                this.showError('No video posts found.');
+                this.showError(tag ? `No video posts tagged #${tag}.` : 'No video posts found.');
                 return;
             }
 
