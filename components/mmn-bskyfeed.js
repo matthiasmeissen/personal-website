@@ -6,22 +6,27 @@ function postUrlFromUri(uri) {
     return `https://bsky.app/profile/${did}/post/${rkey}`;
 }
 
-function postHasTag(post, tag) {
-    const record = post?.record;
-    if (!record) return false;
+async function fetchByAuthorFeed(handle, limit) {
+    const url = new URL('https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed');
+    url.searchParams.set('actor', handle);
+    url.searchParams.set('filter', 'posts_with_video');
+    url.searchParams.set('limit', limit);
 
-    const facets = record.facets || [];
-    for (const facet of facets) {
-        for (const feature of (facet.features || [])) {
-            if (feature.$type === 'app.bsky.richtext.facet#tag' &&
-                (feature.tag || '').toLowerCase() === tag) {
-                return true;
-            }
-        }
-    }
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const { feed } = await res.json();
+    return (feed || []).map((item) => item.post);
+}
 
-    const tags = record.tags || [];
-    return tags.some((t) => (t || '').toLowerCase() === tag);
+async function fetchBySearch(handle, tag, limit) {
+    const url = new URL('https://api.bsky.app/xrpc/app.bsky.feed.searchPosts');
+    url.searchParams.set('q', `#${tag} from:${handle}`);
+    url.searchParams.set('limit', limit);
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const { posts } = await res.json();
+    return posts || [];
 }
 
 class MmnBskyFeed extends HTMLElement {
@@ -48,7 +53,7 @@ class MmnBskyFeed extends HTMLElement {
 
     async loadFeed() {
         const handle = this.getAttribute('handle');
-        const limit = this.getAttribute('limit') || '12';
+        const limit = this.getAttribute('limit') || '25';
         const tag = (this.getAttribute('tag') || '').replace(/^#/, '').toLowerCase();
 
         if (!handle) {
@@ -57,22 +62,11 @@ class MmnBskyFeed extends HTMLElement {
         }
 
         try {
-            const url = new URL('https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed');
-            url.searchParams.set('actor', handle);
-            url.searchParams.set('filter', 'posts_with_video');
-            url.searchParams.set('limit', limit);
+            const posts = tag
+                ? await fetchBySearch(handle, tag, limit)
+                : await fetchByAuthorFeed(handle, limit);
 
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const { feed } = await res.json();
-
-            let videos = (feed || [])
-                .map((item) => item.post)
-                .filter((post) => post?.embed?.$type === 'app.bsky.embed.video#view');
-
-            if (tag) {
-                videos = videos.filter((post) => postHasTag(post, tag));
-            }
+            const videos = posts.filter((p) => p?.embed?.$type === 'app.bsky.embed.video#view');
 
             if (videos.length === 0) {
                 this.showError(tag ? `No video posts tagged #${tag}.` : 'No video posts found.');
