@@ -8,7 +8,6 @@ async function attachHlsJs(video, src) {
     const hls = new Hls();
     hls.loadSource(src);
     hls.attachMedia(video);
-    try { await video.play(); } catch {}
 }
 
 class MmnBskyVideo extends HTMLElement {
@@ -21,7 +20,6 @@ class MmnBskyVideo extends HTMLElement {
         const figure = document.createElement('figure');
 
         const video = document.createElement('video');
-        video.controls = true;
         video.preload = 'none';
         video.playsInline = true;
         video.loop = true;
@@ -47,13 +45,47 @@ class MmnBskyVideo extends HTMLElement {
 
         this.replaceChildren(figure);
 
-        if (playlist) {
+        const hasHover = window.matchMedia('(hover: hover)').matches;
+
+        let sourceReady = false;
+        const ensureSource = async () => {
+            if (sourceReady || !playlist) return;
+            sourceReady = true;
             if (supportsNativeHls(video)) {
                 video.src = playlist;
             } else {
-                video.addEventListener('click', () => attachHlsJs(video, playlist), { once: true });
+                await attachHlsJs(video, playlist);
             }
+        };
+
+        let hovered = false;
+        const updateControls = () => {
+            video.controls = !hasHover || hovered || !video.paused;
+        };
+        updateControls();
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            if (entries.some((e) => e.isIntersecting)) {
+                obs.disconnect();
+                ensureSource();
+            }
+        }, { rootMargin: '200px' });
+        observer.observe(video);
+
+        if (hasHover) {
+            this.addEventListener('pointerenter', (e) => {
+                if (e.pointerType !== 'mouse') return;
+                hovered = true;
+                updateControls();
+            });
+            this.addEventListener('pointerleave', (e) => {
+                if (e.pointerType !== 'mouse') return;
+                hovered = false;
+                updateControls();
+            });
         }
+        video.addEventListener('play', updateControls);
+        video.addEventListener('pause', updateControls);
 
         this.injectStyles();
     }
@@ -77,10 +109,11 @@ class MmnBskyVideo extends HTMLElement {
 
             mmn-bskyvideo video {
                 width: 100%;
-                aspect-ratio: 9 / 16;
+                aspect-ratio: 3 / 4;
                 background: var(--color-background-subtle);
                 border-radius: 12px;
                 display: block;
+                object-fit: cover;
             }
 
             mmn-bskyvideo figcaption {
