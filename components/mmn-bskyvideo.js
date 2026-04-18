@@ -90,6 +90,7 @@ class MmnBskyVideo extends HTMLElement {
             }
 
             mmn-bskyvideo .mmn-bskyvideo-caption {
+                display: none;
                 font-size: var(--size-sm);
                 color: var(--color-foreground-primary);
             }

@@ -181,6 +181,7 @@ class MmnBskyFeed extends HTMLElement {
             mmn-bskyfeed .mmn-bskyfeed-tags {
                 display: flex;
                 flex-wrap: wrap;
+                justify-content: center;
                 gap: var(--size-xs);
                 margin-bottom: var(--size-lg);
             }
